@@ -6,11 +6,18 @@ const validateRegisterInput = (data) => {
 
     data.name = !isEmpty(data.name) ? data.name : "";
     data.email = !isEmpty(data.email) ? data.email : "";
+    data.username = !isEmpty(data.username) ? data.username : "";
     data.password = !isEmpty(data.password) ? data.password : "";
     data.password2 = !isEmpty(data.password2) ? data.password2 : "";
   
     if (validator.isEmpty(data.name)) {
       errors.name = "Name field is required";
+    }
+
+    if(validator.isEmpty(data.username)) {
+      errors.username = "Username is required";
+    } else if(!validator.matches(data.username, "^[a-zA-Z0-9_\.\-]*$")) {
+      errors.username = "Invalid username";
     }
   
     if (validator.isEmpty(data.email)) {
@@ -19,7 +26,7 @@ const validateRegisterInput = (data) => {
       errors.email = "Email is invalid";
     }
   
-    if (validator.isEmpty(data.email)) {
+    if (validator.isEmpty(data.password)) {
       errors.password = "Password field is required";
     }
   
@@ -27,7 +34,7 @@ const validateRegisterInput = (data) => {
       errors.password2 = "Confirm password field is required";
     }
   
-    if (!validator.isLength(data.password, { min: 6, max: 30 })) {
+    if (!validator.isLength(data.password, { max: 30 })) {
       errors.password =
         "Password must be at least 6 characters and at most 30 characters";
     }

@@ -16,12 +16,19 @@ router.post("/register", (req, res) => {
     return res.status(400).json(errors);
   }
 
+  User.findOne({ username: req.body.username }).then((user) => {
+    if(user) {
+      return res.status(400).json({ username: "Username already exists" });
+    }
+  });
+
   User.findOne({ email: req.body.email }).then((user) => {
     if (user) {
       return res.status(400).json({ email: "Email already exists" });
     } else {
       const newUser = new User({
         name: req.body.name,
+        username: req.body.username,
         email: req.body.email,
         password: req.body.password,
       });
@@ -45,18 +52,19 @@ router.post("/login", (req, res) => {
 
   if (!isValid) return res.status(400).json(errors);
 
-  const email = req.body.email;
+  const username = req.body.username;
   const password = req.body.password;
 
-  User.findOne({ email }).then((user) => {
+  User.findOne({ username }).then((user) => {
     if (!user)
-      return res.status(400).json({ emailnotfound: "Email not found" });
+      return res.status(400).json({ usernamenotfound: "Username not found" });
 
     bcrypt.compare(password, user.password).then((isMatch) => {
       if (isMatch) {
         const payload = {
           id: user.id,
           name: user.name,
+          accessLevel: user.accessLevel,
         };
 
         jwt.sign(

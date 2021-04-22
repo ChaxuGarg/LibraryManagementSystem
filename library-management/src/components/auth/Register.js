@@ -11,6 +11,7 @@ class Register extends Component {
     this.state = {
       name: "",
       email: "",
+      username: "",
       password: "",
       password2: "",
       errors: {},
@@ -39,6 +40,7 @@ class Register extends Component {
     const newUser = {
       name: this.state.name,
       email: this.state.email,
+      username: this.state.username,
       password: this.state.password,
       password2: this.state.password2,
     };
@@ -75,6 +77,18 @@ class Register extends Component {
             type="email"
             className={classNames("", {
               invalid: errors.email,
+            })}
+          />
+          <label htmlFor="username">Username</label>
+          <span style={{ color: "red" }}>{errors.username}</span>
+          <input
+            onChange={this.onChange}
+            value={this.state.username}
+            error={errors.username}
+            id="username"
+            type="text"
+            className={classNames("", {
+              invalid: errors.username,
             })}
           />
           <label htmlFor="password">Password</label>

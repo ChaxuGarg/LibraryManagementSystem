@@ -1,7 +1,7 @@
 import "./App.css";
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import Landing from "./components/landing.js";
+import Landing from "./components/landing/landing.js";
 import Register from "./components/auth/Register.js";
 import Login from "./components/auth/Login";
 import { Provider } from "react-redux";
@@ -11,6 +11,7 @@ import setAuthToken from "./utils/setAuthToken.js";
 import { setCurrentUser, logoutUser } from "./actions/authActions.js";
 import PrivateRoute from "./components/private-route/PrivateRoute.js";
 import Dashboard from "./components/dashboard/Dashboard.js";
+import AddNewBook from "./components/books/addNew.js";
 
 if (localStorage.jwtToken) {
   const token = localStorage.jwtToken;
@@ -41,6 +42,7 @@ function App() {
           </Route>
           <Switch>
             <PrivateRoute exact path="/dashboard" component={Dashboard} />
+            <PrivateRoute exact path="/addnewbook" component={AddNewBook} />
           </Switch>
         </div>
       </Router>

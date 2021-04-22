@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { logoutUser } from "../../actions/authActions.js";
-import { Redirect } from "react-router";
 
 class Dashboard extends Component {
   onLogoutClick = (e) => {
@@ -10,20 +9,33 @@ class Dashboard extends Component {
     this.props.logoutUser();
   };
 
+  addNewBook = (e) => {
+    e.preventDefault();
+    this.props.history.push("/addnewbook");
+  };
+
   componentDidMount() {
     if (!this.props.auth.isAuthenticated) this.props.history.push("/login");
   }
 
   render() {
-    if(this.props.auth.isAuthenticated === false){
-      return (
-      <Redirect exact to="/login" />
-      )
-    }
     const { user } = this.props.auth;
     return (
       <div className="Dashboard">
         <h4>Hey There, {user.name.split(" ")[0]}</h4>
+        {(user.accessLevel === "librarian" || user.accessLevel === "admin") && (
+          <button
+            style={{
+              width: "150px",
+              borderRadius: "3px",
+              letterSpacing: "1.5px",
+              marginTop: "1rem",
+            }}
+            onClick={this.addNewBook}
+          >
+            Add New Book
+          </button>
+        )}
         <button
           style={{
             width: "150px",
@@ -31,7 +43,7 @@ class Dashboard extends Component {
             letterSpacing: "1.5px",
             marginTop: "1rem",
           }}
-          onClick = {this.onLogoutClick}
+          onClick={this.onLogoutClick}
         >
           Logout
         </button>
@@ -41,12 +53,12 @@ class Dashboard extends Component {
 }
 
 Dashboard.propTypes = {
-    logoutUser: PropTypes.func.isRequired,
-    auth: PropTypes.object.isRequired
+  logoutUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = state => ({
-    auth: state.auth
+const mapStateToProps = (state) => ({
+  auth: state.auth,
 });
 
 export default connect(mapStateToProps, { logoutUser })(Dashboard);

@@ -6,6 +6,7 @@ import passport from "passport";
 import users from "./routes/api/users.js";
 import JwtStrategy from "./config/passport.js";
 import Cors from "cors";
+import books from "./routes/api/books.js";
 
 const app = express();
 const dbURI = keys.mongoURI;
@@ -31,5 +32,6 @@ app.use(passport.initialize());
 JwtStrategy(passport);
 
 app.use("/api/users", users);
+app.use("/api/books", books);
 
 app.listen(port, () => console.log(`Server up and running on port ${port} !`));
