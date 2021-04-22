@@ -53,6 +53,7 @@ class addNew extends Component {
     };
 
     this.props.addNewBook(bookData);
+    this.props.history.push("/dashboard");
   };
 
   render() {

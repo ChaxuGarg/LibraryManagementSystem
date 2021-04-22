@@ -6,7 +6,6 @@ import validateRegisterInput from "../../validation/signup.js";
 import validateLoginInput from "../../validation/login.js";
 import User from "../../models/User.js";
 
-
 const router = express.Router();
 
 router.post("/register", (req, res) => {
@@ -17,7 +16,7 @@ router.post("/register", (req, res) => {
   }
 
   User.findOne({ username: req.body.username }).then((user) => {
-    if(user) {
+    if (user) {
       return res.status(400).json({ username: "Username already exists" });
     }
   });
@@ -86,6 +85,32 @@ router.post("/login", (req, res) => {
           .json({ passwordincorrect: "Password incorrect" });
       }
     });
+  });
+});
+
+router.get("/list", (req, res) => {
+  User.find(
+    {},
+    { name: 1, username: 1, accessLevel: 1, email: 1, _id: 0 },
+    (err, accounts) => {
+      res.json({ accountList: accounts });
+    }
+  );
+});
+
+router.patch("/changeaccess", (req, res) => {
+  let access = "";
+  console.log(req.body);
+  if (req.body.accessLevel === "librarian") access = "user";
+  else access = "librarian";
+  console.log(access);
+  User.updateOne(
+    { username: req.body.username },
+    { $set: { accessLevel: access } }
+  ).then(obj => {
+    console.log("updated");
+  }).catch(err => {
+    console.log("error");
   });
 });
 
