@@ -12,15 +12,14 @@ class requestList extends Component {
     };
   }
 
-  
   componentDidMount() {
     if (!this.props.auth.isAuthenticated) this.props.history.push("/login");
     if (this.props.auth.user.accessLevel !== "user")
       this.props.history.push("/dashboard");
 
     const data = {
-        username: this.props.auth.user.username,
-    }
+      username: this.props.auth.user.username,
+    };
     axios.post("/api/requests/list", data).then((res) => {
       this.setState({
         requests: res.data.requestList,
@@ -59,43 +58,44 @@ class requestList extends Component {
               if (request.status === "Accepted") {
                 return (
                   <tr key={request.username + request.ISBN}>
-                    <td>ISBN:
+                    <td>
+                      ISBN:
                       {request.ISBN}
                       <Link to={`/book/${request.ISBN}`}>
                         <button>View Book Details</button>
                       </Link>
                     </td>
                     <td>{request.due}</td>
-                    <td>
-                      Accepted
-                    </td>
+                    <td>Accepted</td>
                   </tr>
                 );
               }
+              return <span></span>;
             })}
             {requests.map((request) => {
               if (request.status === "Renew") {
                 return (
                   <tr key={request.username + request.ISBN}>
-                    <td>ISBN:
+                    <td>
+                      ISBN:
                       {request.ISBN}
                       <Link to={`/book/${request.ISBN}`}>
                         <button>View Book Details</button>
                       </Link>
                     </td>
                     <td>{request.due}</td>
-                    <td>
-                      Pending for Renew
-                    </td>
+                    <td>Pending for Renew</td>
                   </tr>
                 );
               }
+              return <span></span>;
             })}
             {requests.map((request) => {
               if (request.status === "Pending") {
                 return (
                   <tr key={request.username + request.ISBN}>
-                    <td>ISBN:
+                    <td>
+                      ISBN:
                       {request.ISBN}
                       <Link to={`/book/${request.ISBN}`}>
                         <button>View Book Details</button>
@@ -106,6 +106,7 @@ class requestList extends Component {
                   </tr>
                 );
               }
+              return <span></span>;
             })}
           </tbody>
         </table>

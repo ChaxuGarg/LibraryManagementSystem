@@ -142,7 +142,8 @@ class requestList extends Component {
                     </td>
                   </tr>
                 );
-              }
+              };
+              return <span></span>;
             })}
             {requests.map((request) => {
               if (request.status === "Renew") {
@@ -185,7 +186,8 @@ class requestList extends Component {
                     </td>
                   </tr>
                 );
-              }
+              };
+              return <span></span>;
             })}
             {requests.map((request) => {
               if (request.status === "Accepted") {
@@ -202,7 +204,8 @@ class requestList extends Component {
                     <td>{request.status}</td>
                   </tr>
                 );
-              }
+              };
+              return <span></span>;
             })}
           </tbody>
         </table>
