@@ -11,7 +11,7 @@ Backend hosted at - https://library-backend-chaxu.herokuapp.com
 2. Move inside backend directory using terminal `cd backend`
 3. Run `npm install` 
 4. Rename the file `keys_sample.js` inside `backend/config` with `keys.js`.
-5. Paste the code from given doc inside the `keys.js` file and save it. (Doc - https://docs.google.com/document/d/1LIfrXZWLzMiRUST3vqXc-ilRC2ZkvA222cXfrydDuUU/edit)
+5. Paste the code from given doc inside the `keys.js` file and save it. (Doc - https://docs.google.com/document/d/1LIfrXZWLzMiRUST3vqXc-ilRC2ZkvA222cXfrydDuUU/edit?usp=sharing)
 6. Run the server using command `nodemon server.js` in the terminal on port 3000. (Ensure you are inside the backend directory).
 7. Open a new terminal and move to `library-management` directory inside repo which is our frontend.
 8. Run `npm install`.
