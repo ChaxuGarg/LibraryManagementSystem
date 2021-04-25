@@ -13,6 +13,11 @@ import PrivateRoute from "./components/private-route/PrivateRoute.js";
 import Dashboard from "./components/dashboard/Dashboard.js";
 import AddNewBook from "./components/books/addNew.js";
 import UserList from "./components/userList.js";
+import BooksList from "./components/books/booksList.js";
+import BookDetails from "./components/books/book.js";
+import EditBook from "./components/books/EditBook.js";
+import requestList from "./components/requestList.js";
+import Requests from "./components/Requests.js";
 
 if (localStorage.jwtToken) {
   const token = localStorage.jwtToken;
@@ -45,6 +50,11 @@ function App() {
             <PrivateRoute exact path="/dashboard" component={Dashboard} />
             <PrivateRoute exact path="/addnewbook" component={AddNewBook} />
             <PrivateRoute exact path="/userlist" component={UserList} />
+            <PrivateRoute exact path="/books" component={BooksList} />
+            <PrivateRoute exact path="/book/:id" component={BookDetails} />
+            <PrivateRoute exact path="/book/edit/:id" component = {EditBook} />
+            <PrivateRoute exact path="/requestlistall" component = {requestList} />
+            <PrivateRoute exact path="/requestlist" component={Requests} />
           </Switch>
         </div>
       </Router>

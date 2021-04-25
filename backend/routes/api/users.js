@@ -64,6 +64,7 @@ router.post("/login", (req, res) => {
           id: user.id,
           name: user.name,
           accessLevel: user.accessLevel,
+          username: user.username,
         };
 
         jwt.sign(
@@ -100,18 +101,16 @@ router.get("/list", (req, res) => {
 
 router.patch("/changeaccess", (req, res) => {
   let access = "";
-  console.log(req.body);
   if (req.body.accessLevel === "librarian") access = "user";
   else access = "librarian";
-  console.log(access);
   User.updateOne(
     { username: req.body.username },
     { $set: { accessLevel: access } }
-  ).then(obj => {
-    console.log("updated");
-  }).catch(err => {
-    console.log("error");
-  });
+  )
+    .then((obj) => {})
+    .catch((err) => {
+      res.status(400);
+    });
 });
 
 export default router;

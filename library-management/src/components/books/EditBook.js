@@ -3,9 +3,9 @@ import { Link, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import classnames from "classnames";
-import { addNewBook } from "../../actions/bookActions.js";
+import axios from "../../axios.js";
 
-class addNew extends Component {
+class editBook extends Component {
   constructor() {
     super();
     this.state = {
@@ -15,10 +15,11 @@ class addNew extends Component {
       genre: "",
       summary: "",
       ISBN: "",
+      oldISBN: "",
       location: "",
       availableCopies: "",
       errors: {},
-      added: false,
+      edited: false,
     };
   }
 
@@ -26,15 +27,29 @@ class addNew extends Component {
     if (!this.props.auth.isAuthenticated) this.props.history.push("/login");
     if (this.props.auth.user.accessLevel === "user")
       this.props.history.push("/dashboard");
+
+    const data = {
+      id: this.props.match.params.id,
+    };
+
+    axios.post("/api/books/book", data).then((res) => {
+      this.setState({
+        title: res.data.book.title,
+        author: res.data.book.author,
+        publisher: res.data.book.publisher,
+        genre: res.data.book.genre,
+        summary: res.data.book.summary,
+        ISBN: res.data.book.ISBN,
+        location: res.data.book.location,
+        availableCopies: res.data.book.availableCopies,
+        oldISBN: res.data.book.ISBN,
+      });
+    });
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.errors) {
-      this.setState({
-        errors: nextProps.errors,
-        added: false,
-      });
-    }
+  componentDidUpdate() {
+    if (this.state.edited === true)
+      this.props.history.push(`/book/${this.state.ISBN}`);
   }
 
   onChange = (e) => {
@@ -53,21 +68,30 @@ class addNew extends Component {
       ISBN: this.state.ISBN,
       location: this.state.location,
       availableCopies: this.state.availableCopies,
+      oldISBN: this.state.oldISBN,
     };
 
-    this.setState({
-      added: true,
-    });
-    this.props.addNewBook(bookData);
+    axios
+      .post("/api/books/edit", bookData)
+      .then((res) => {
+        this.setState({
+          edited: res.data.edited,
+        });
+      })
+      .catch((err) => {
+        this.setState({
+          errors: err.response.data,
+          edited: false,
+        });
+      });
   };
 
   render() {
     const { errors } = this.state;
 
     return (
-      <div className="addNew">
-        <h1>Add New Book</h1>
-        {this.state.added && <p style={{ color: "red" }}>Book added</p>}
+      <div className="editBook">
+        <h1>Edit Book</h1>
         <form noValidate onSubmit={this.onSubmit}>
           <label htmlFor="title">Title (Required)</label>
           <span style={{ color: "red" }}> {errors.title}</span>
@@ -152,7 +176,7 @@ class addNew extends Component {
               type="submit"
               style={{ width: "40vw", height: "50px", borderRadius: "3px" }}
             >
-              Add Book
+              Edit Book
             </button>
           </div>
           <div style={{ textAlign: "center", marginBottom: "50px" }}>
@@ -166,15 +190,12 @@ class addNew extends Component {
   }
 }
 
-addNew.propTypes = {
-  addNewBook: PropTypes.func.isRequired,
-  errors: PropTypes.object.isRequired,
+editBook.propTypes = {
   auth: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  errors: state.errors,
   auth: state.auth,
 });
 
-export default connect(mapStateToProps, { addNewBook })(withRouter(addNew));
+export default connect(mapStateToProps)(withRouter(editBook));

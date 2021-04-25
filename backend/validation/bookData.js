@@ -12,11 +12,11 @@ const validateBookData = (data) => {
     errors.title = "Title is required";
   }
 
-  if (validator.isEmpty(data.ISBN)) {
+  if (validator.isEmpty(data.ISBN.toString())) {
     errors.ISBN = "ISBN no. is required";
   }
 
-  if (validator.isEmpty(data.availableCopies)) {
+  if (validator.isEmpty(data.availableCopies.toString())) {
     errors.availableCopies = "No. of copies available is required";
   } else if (data.availableCopies < 0) {
     errors.availableCopies = "No. of copies available can't be negative";

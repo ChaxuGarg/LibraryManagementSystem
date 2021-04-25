@@ -14,6 +14,26 @@ class Dashboard extends Component {
     this.props.history.push("/addnewbook");
   };
 
+  viewUserList = (e) => {
+    e.preventDefault();
+    this.props.history.push("/userlist");
+  };
+
+  viewBooks = (e) => {
+    e.preventDefault();
+    this.props.history.push("/books");
+  };
+
+  viewRequestsList = (e) => {
+    e.preventDefault();
+    this.props.history.push("/requestlistall");
+  };
+
+  viewRequests = (e) => {
+    e.preventDefault();
+    this.props.history.push("/requestlist");
+  }
+
   componentDidMount() {
     if (!this.props.auth.isAuthenticated) this.props.history.push("/login");
   }
@@ -22,8 +42,16 @@ class Dashboard extends Component {
     const { user } = this.props.auth;
     return (
       <div className="Dashboard">
-        <h4>Hey There, {user.name.split(" ")[0]}</h4>
-        {(user.accessLevel === "librarian" || user.accessLevel === "admin") && (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <h1>Hey There, {user.name.split(" ")[0]}</h1>
+          <h4>You are a registered {user.accessLevel}</h4>
           <button
             style={{
               width: "150px",
@@ -31,22 +59,76 @@ class Dashboard extends Component {
               letterSpacing: "1.5px",
               marginTop: "1rem",
             }}
-            onClick={this.addNewBook}
+            onClick={this.viewBooks}
           >
-            Add New Book
+            View Books
           </button>
-        )}
-        <button
-          style={{
-            width: "150px",
-            borderRadius: "3px",
-            letterSpacing: "1.5px",
-            marginTop: "1rem",
-          }}
-          onClick={this.onLogoutClick}
-        >
-          Logout
-        </button>
+          {(user.accessLevel === "librarian" ||
+            user.accessLevel === "admin") && (
+            <button
+              style={{
+                width: "150px",
+                borderRadius: "3px",
+                letterSpacing: "1.5px",
+                marginTop: "1rem",
+              }}
+              onClick={this.addNewBook}
+            >
+              Add New Book
+            </button>
+          )}
+          {user.accessLevel === "admin" && (
+            <button
+              style={{
+                width: "150px",
+                borderRadius: "3px",
+                letterSpacing: "1.5px",
+                marginTop: "1rem",
+              }}
+              onClick={this.viewUserList}
+            >
+              View Users List
+            </button>
+          )}
+          {user.accessLevel === "user" && (
+            <button
+              style={{
+                width: "150px",
+                borderRadius: "3px",
+                letterSpacing: "1.5px",
+                marginTop: "1rem",
+              }}
+              onClick={this.viewRequests}
+            >
+              View My Requests
+            </button>
+          )}
+          {(user.accessLevel === "librarian" ||
+            user.accessLevel === "admin") && (
+            <button
+              style={{
+                width: "150px",
+                borderRadius: "3px",
+                letterSpacing: "1.5px",
+                marginTop: "1rem",
+              }}
+              onClick={this.viewRequestsList}
+            >
+              View Requests
+            </button>
+          )}
+          <button
+            style={{
+              width: "150px",
+              borderRadius: "3px",
+              letterSpacing: "1.5px",
+              marginTop: "1rem",
+            }}
+            onClick={this.onLogoutClick}
+          >
+            Logout
+          </button>
+        </div>
       </div>
     );
   }
