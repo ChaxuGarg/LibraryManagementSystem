@@ -31,3 +31,6 @@ Backend hosted at - https://library-backend-chaxu.herokuapp.com
  * A user can see list of his accepted and pending requests with due dates.
  * Librarians can accept/reject requests in the view requests page.
  * Appropriate errors are shown on every form.
+ * A user remains logged on for a given time period until logged out.
+ * Users are redirected to login page if not authenticated.
+ * Users are redirected to dashboard if accessing page they don't have access to.
